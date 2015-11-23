@@ -10,18 +10,22 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>winsw</RootNamespace>
     <AssemblyName>WindowsService</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>
     </StartupObject>
     <SignManifests>false</SignManifests>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(SolutionDir)..\winsw_key.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>winsw_cert.pfx</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>3.5</OldToolsVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -34,11 +38,8 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -62,8 +63,9 @@
     </DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <HintPath>..\..\packages\log4net.2.0.3\lib\net20-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\log4net.2.0.4\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -90,11 +92,11 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\winsw_cert.pfx" />
+    <None Include="app.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="$(AssemblyOriginatorKeyFile)" />
+    <None Include="winsw_cert.pfx" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -171,7 +173,7 @@
       <CertificateTmpPubFile>$(OutputPath)winsw_cert.pub</CertificateTmpPubFile>
     </PropertyGroup>
     <Message Text="Extracting public key from $(AssemblyOriginatorKeyFile)" />
-    <Exec Command="&quot;$(SNPath)&quot; -p &quot;$(AssemblyOriginatorKeyFile)&quot; &quot;$(CertificateTmpPubFile)&quot;" /> 
+    <Exec Command="&quot;$(SNPath)&quot; -p &quot;$(AssemblyOriginatorKeyFile)&quot; &quot;$(CertificateTmpPubFile)&quot;" />
     <Message Text="ILMerge @(MergeAsm) -&gt; $(MergedAssembly)" Importance="high" />
     <ILMerge ToolPath="$(ILMergePath)" InputAssemblies="@(MergeAsm)" OutputFile="$(MergedAssembly)" TargetKind="SameAsPrimaryAssembly" KeyFile="$(CertificateTmpPubFile)" DelaySign="true" />
     <Exec Command="&quot;$(SNPath)&quot; -R &quot;$(MergedAssembly)&quot; &quot;$(AssemblyOriginatorKeyFile)&quot;" />
